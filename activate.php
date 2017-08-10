@@ -6,6 +6,7 @@
 
 	<div class="jumbotron">
 		<h1 class="text-center">Activate</h1>
+		<p><?php activate_user(); ?></p>
 	</div>
 
 

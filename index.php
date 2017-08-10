@@ -4,6 +4,9 @@
 
 
 	<div class="jumbotron">
+	
+	
+	    <?php display_message(); ?>
 		<h1 class="text-center"> Home Page</h1>
 	</div>
 	
@@ -32,7 +35,10 @@
         echo $row['username'] . " " . $row['first_name'] . " " . $row['last_name'] . " " . $row['email'];
         
         */
-    $username = "johnh";
+
+   /* 
+   
+   $username = "johnh";
     
     echo $username . " " . "<br>";
     
@@ -41,6 +47,8 @@
     echo (microtime()) . "<br>";
 
     echo (token_generator());
+    
+    */
 
     ?>
 
