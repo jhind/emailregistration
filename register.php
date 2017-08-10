@@ -3,7 +3,33 @@
 
 	<div class="row">
 		<div class="col-lg-6 col-lg-offset-3">
-
+            
+            <?php 
+                
+                if(isset($_POST['register-submit'])) {
+                $email = $_POST['email'];
+                    
+                $sql = "SELECT * FROM user1 WHERE email = '$email'";
+                    
+                echo $sql;
+                    
+                $result = query($sql);
+                confirm($result);
+                
+                echo row_count($result) . " row count" . "<br>";
+                    
+                echo $email;
+                    
+                echo mysqli_num_rows($result);
+                    
+                $row = mysqli_fetch_array($result);
+                    
+                echo $row['username'] . " from database";
+                
+                }
+            
+            ?>
+            
             <?php validate_user_registration(); ?>
 								
 		</div>

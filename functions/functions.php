@@ -65,6 +65,47 @@ DELIMITER;
         
     }
 
+    function email_exists($email) {
+        
+        $sql = "SELECT id FROM user1 WHERE email = '$email'";
+        
+        $result = query($sql);
+        
+        confirm($result);
+        
+        if(row_count($result) > 0) {
+            
+            return true;
+            
+        } else {
+            
+            return false;
+        }
+        
+    }
+
+    function username_exists($username) {
+        
+        $sql = "SELECT id FROM user1 WHERE username = '$username'";
+        
+        $result = query($sql);
+        
+        confirm($result);
+        
+        if(row_count($result) > 0) {
+            
+            return true;
+            
+        } else {
+            
+            return false;
+        }
+        
+    }
+
+    
+    
+
 
 /* validation functions */
 
@@ -82,7 +123,7 @@ DELIMITER;
             $email              = clean($_POST['email']);
             $password           = clean($_POST['password']);
             $confirm_password   = clean($_POST['confirm_password']);
-            
+                        
             
             if(strlen($first_name) < $min) {
                 
@@ -109,6 +150,12 @@ DELIMITER;
                 
             }
             
+            if(username_exists($username)) {
+                
+                $errors[] = "That username is already in use!";
+                
+            }
+            
             if(strlen($username) < $min) {
                 
                 $errors[] = "Your username cannot be less than {$min} characters";
@@ -121,13 +168,19 @@ DELIMITER;
                 
             }
             
-             if(strlen($username) < $min) {
+            if(email_exists($email)) {
+                
+                $errors[] = "That email address is already registered!";
+                
+            }
+            
+            if(strlen($email) < $min) {
                 
                 $errors[] = "Your email address cannot be less than {$min} characters";
                 
             }
             
-            if(strlen($username) > $max) {
+            if(strlen($email) > $max) {
                 
                 $errors[] = "Your email address cannot be more than {$max} characters";
                 
