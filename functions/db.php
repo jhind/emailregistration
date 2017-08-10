@@ -2,6 +2,10 @@
 
 $con = mysqli_connect('192.168.10.10','homestead','secret','login_db');
 
+// find problem pulling data from users table
+
+/*
+
 if(!$con) {
     
     echo "Database connection problem";
@@ -19,7 +23,7 @@ if(!$con) {
         
     } else {
         
-        "There must be data returned!";
+        echo "There must be data returned!<br>";
         
     }
     
@@ -27,7 +31,12 @@ if(!$con) {
     echo $row['id'] . " there should be some db output here<br>";
     print_r($row);
     
+    $sql = "SELECT * FROM users";
+    $result2 = mysqli_query($con, $sql);
+    
+    
 }
+*/
 
 function row_count($result) {
     

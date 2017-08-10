@@ -1,4 +1,4 @@
-<?php include("functions/init.php"); ?>
+<?php require_once("functions/init.php"); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

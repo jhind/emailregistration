@@ -19,6 +19,8 @@
         
         */
 
+        /*
+        
         $sql = "SELECT * FROM users";
 
         $result = query($sql);
@@ -27,9 +29,18 @@
 
         $row = fetch_array($result);
 
-        echo $row['username'] . " " . $row['first_name'] . " " . $row['last_name'];
+        echo $row['username'] . " " . $row['first_name'] . " " . $row['last_name'] . " " . $row['email'];
+        
+        */
+    $username = "johnh";
+    
+    echo $username . " " . "<br>";
+    
+    echo md5($username) . "<br>";
 
+    echo (microtime()) . "<br>";
 
+    echo (token_generator());
 
     ?>
 

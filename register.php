@@ -6,10 +6,10 @@
             
             <?php 
                 
-                if(isset($_POST['register-submit'])) {
+                /*if(isset($_POST['register-submit'])) {
                 $email = $_POST['email'];
                     
-                $sql = "SELECT * FROM user1 WHERE email = '$email'";
+                $sql = "SELECT * FROM users WHERE email = '$email'";
                     
                 echo $sql;
                     
@@ -18,15 +18,15 @@
                 
                 echo row_count($result) . " row count" . "<br>";
                     
-                echo $email;
+                echo $email . "<br>";
                     
-                echo mysqli_num_rows($result);
+                echo mysqli_num_rows($result) . "rows from db <br>";
                     
                 $row = mysqli_fetch_array($result);
                     
                 echo $row['username'] . " from database";
                 
-                }
+                }*/
             
             ?>
             
@@ -59,24 +59,24 @@
 										<input type="text" name="first_name" id="first_name" tabindex="1" class="form-control" placeholder="First Name" value="" required >
 									</div>
 									<div class="form-group">
-										<input type="text" name="last_name" id="last_name" tabindex="1" class="form-control" placeholder="Last Name" value="" required >
+										<input type="text" name="last_name" id="last_name" tabindex="2" class="form-control" placeholder="Last Name" value="" required >
 									</div>
 									<div class="form-group">
-										<input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Username" value="" required >
+										<input type="text" name="username" id="username" tabindex="3" class="form-control" placeholder="Username" value="" required >
 									</div>
 									<div class="form-group">
-										<input type="email" name="email" id="register_email" tabindex="1" class="form-control" placeholder="Email Address" value="" required >
+										<input type="email" name="email" id="register_email" tabindex="4" class="form-control" placeholder="Email Address" value="" required >
 									</div>
 									<div class="form-group">
-										<input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password" required>
+										<input type="password" name="password" id="password" tabindex="5" class="form-control" placeholder="Password" required>
 									</div>
 									<div class="form-group">
-										<input type="password" name="confirm_password" id="confirm-password" tabindex="2" class="form-control" placeholder="Confirm Password" required>
+										<input type="password" name="confirm_password" id="confirm-password" tabindex="6" class="form-control" placeholder="Confirm Password" required>
 									</div>
 									<div class="form-group">
 										<div class="row">
 											<div class="col-sm-6 col-sm-offset-3">
-												<input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Register Now">
+												<input type="submit" name="register-submit" id="register-submit" tabindex="7" class="form-control btn btn-register" value="Register Now">
 											</div>
 										</div>
 									</div>
