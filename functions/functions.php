@@ -337,9 +337,16 @@ function activate_user() {
                 $result2 = query($sql2);
                 confirm($result2);
                 
-                set_message("<p class='bg-success'>Your account has been activated, please login</p>");
+                set_message("<p class='bg-success text-center'>Your account has been activated, please login</p>");
                 
                 redirect("login.php");
+                
+            } else {
+                
+                set_message("<p class='bg-danger text-center'>Sorry your account could not be activated.</p>");
+                
+                redirect("login.php");
+                
                 
             }
             
@@ -353,5 +360,11 @@ function activate_user() {
     
     
 }
+
+/* login function(s) *?
+
+
+
+
 
 ?>
