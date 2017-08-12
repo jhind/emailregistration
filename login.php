@@ -7,6 +7,8 @@
 		<div class="col-lg-6 col-lg-offset-3">
 
 	        <?php display_message(); ?>
+	        
+	        <?php validate_login(); ?>
 								
 		</div>
 	</div>
@@ -29,7 +31,7 @@
 							<div class="col-lg-12">
 								<form id="login-form"  method="post" role="form" style="display: block;">
 									<div class="form-group">
-										<input type="text" name="email" id="email" tabindex="1" class="form-control" placeholder="Email" required>
+										<input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email" required>
 									</div>
 									<div class="form-group">
 										<input type="password" name="password" id="login-

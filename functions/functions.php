@@ -215,14 +215,13 @@ function validate_user_registration() {
             
             if(register_user($first_name, $last_name, $username, $email, $password)) {
              
-                set_message("<p class='bg-success text-center'>You have been registgered. Please check your inbox or spam folder for an activation email.</p>");
+                set_message("<p class='bg-success text-center'>You have been registered. Please check your inbox or spam folder for an activation email.</p>");
                 
                 redirect("index.php");
                 
                 //echo "You have been registered";
                 
             } 
-            
             
            /* 
            
@@ -285,7 +284,7 @@ function register_user($first_name, $last_name, $username, $email, $password) {
             $subject = "Activate your account";
             $msg = " Please click the link below to activate your account
             
-                http://login.app/login/activate.php?email=$email&code=$validation
+                http://login.app/activate.php?email=$email&code=$validation
             
             
             ";
@@ -343,7 +342,7 @@ function activate_user() {
                 
             } else {
                 
-                set_message("<p class='bg-danger text-center'>Sorry your account could not be activated.</p>");
+                set_message("<p class='bg-danger text-center'>Sorry your account could not be activated. Please contact support.</p>");
                 
                 redirect("login.php");
                 
@@ -361,10 +360,112 @@ function activate_user() {
     
 }
 
-/* login function(s) *?
+/* login function(s) */
 
 
+function validate_login() {
+    
+    $errors = [];
+    
+    if($_SERVER['REQUEST_METHOD'] == "POST") {
+        
+        $email              = clean($_POST['email']);
+        $password           = clean($_POST['password']);
+        
+        //check that username and password have been entered
+        
+        if(empty($email)) {
+            
+            $errors = "Please enter an email address!";
+            
+        }
+        
+        if(empty($password)) {
+            
+            $errors = "Please enter a password!";
+            
+        }
+        
+        
+        if(!empty($errors)) {
+
+            foreach ($errors as $error) {
+
+            //display errors here    
+
+            display_validation_error($error);
+
+            }
+        
+        // log user in if no errors
+        } else {
+            
+            if(login_user($email, $password)) {
+                
+                redirect("admin.php");
+                
+            } else {
+                
+                echo display_validation_error("Your email or password are incorrect");
+                
+            }
+                
+        } 
+
+    }
+}
 
 
+/* login user after validating form */
+
+function login_user($email, $password) {
+    
+    $sql = "SELECT password, id FROM users WHERE email = '" . escape($email) . "' AND active = 1";
+    
+    $result = query($sql);
+    
+    if(row_count($result) == 1) {
+        
+        $row = fetch_array($result);
+        
+        $db_password = $row['password'];
+        
+        if(password_verify(escape($password), $db_password)) {
+        
+            //$email has already been escaped in the sql query. But probably should escape it again
+            //even though it's just being assigned to a session variable
+            
+            $_SESSION['email'] = escape($email);
+                
+            return true;
+        
+        } else {
+            
+            return false;
+            
+        }
+        
+    } else {
+        
+        return false;
+    }
+
+}
+
+/* logged in function - setting session */
+
+function logged_in() {
+    
+    if(isset($_SESSION['email'])) {
+        
+        return true;
+        
+    } else {
+        
+        return false;
+        
+    }
+    
+}
 
 ?>
