@@ -371,6 +371,7 @@ function validate_login() {
         
         $email              = clean($_POST['email']);
         $password           = clean($_POST['password']);
+        $remember           = isset($_POST['remember']);
         
         //check that username and password have been entered
         
@@ -400,7 +401,7 @@ function validate_login() {
         // log user in if no errors
         } else {
             
-            if(login_user($email, $password)) {
+            if(login_user($email, $password, $remember)) {
                 
                 redirect("admin.php");
                 
@@ -418,7 +419,7 @@ function validate_login() {
 
 /* login user after validating form */
 
-function login_user($email, $password) {
+function login_user($email, $password, $remember) {
     
     $sql = "SELECT password, id FROM users WHERE email = '" . escape($email) . "' AND active = 1";
     
@@ -431,6 +432,13 @@ function login_user($email, $password) {
         $db_password = $row['password'];
         
         if(password_verify(escape($password), $db_password)) {
+            
+            if($remember == "on") {
+                
+                //expires after 60 secs
+                setcookie('emailreg', $email, time() + 60);
+                
+            }
         
             //$email has already been escaped in the sql query. But probably should escape it again
             //even though it's just being assigned to a session variable
@@ -456,7 +464,7 @@ function login_user($email, $password) {
 
 function logged_in() {
     
-    if(isset($_SESSION['email'])) {
+    if(isset($_SESSION['email']) || isset($_COOKIE['emailreg'])) {
         
         return true;
         
