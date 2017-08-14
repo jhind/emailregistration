@@ -436,7 +436,7 @@ function login_user($email, $password, $remember) {
             if($remember == "on") {
                 
                 //expires after 60 secs
-                setcookie('emailreg', $email, time() + 60);
+                setcookie('emailreg', $email, time() + 86400);
                 
             }
         
@@ -472,8 +472,26 @@ function logged_in() {
         
         return false;
         
+    }    
+}
+
+/* recover password function(s) */
+
+function recover_password() {
+    
+    if($_SERVER['REQUEST_METHOD'] == "POST") {
+        
+        if(isset($_SESSION['token']) && $_POST['token'] === $_SESSION['token']) {
+        
+            echo "It works <br>";
+            echo $_SESSION['token'];
+            
+        
+        }
+        
     }
     
 }
+
 
 ?>
