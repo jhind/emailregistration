@@ -485,13 +485,110 @@ function recover_password() {
         
         if(isset($_SESSION['token']) && $_POST['token'] === $_SESSION['token']) {
         
-            echo "It works <br>";
-            echo $_SESSION['token'];
+            $email = clean($_POST['email']);
+            $email = escape($email);
+            
+            if(email_exists($email)) {
+                
+                $validation_code = token_generator();
+                
+                setcookie('temp_access_code', $validation_code, time() + 300);
+                
+                $sql = "UPDATE users SET validation_code = '$validation_code' WHERE email = '$email'";
+                $result = query($sql);
+                confirm($result);
+                
+                $subject = "Please reset your password";
+                $message = " Here is your password reset code {$validation_code}
+                
+                Click here to reset your password http://login.app/code.php?email=$email&code=$validation_code
+                
+                ";
+                
+                $headers = "noreply@login.com";
+                
+                if(!send_email($email, $subject, $message, $headers)) {
+                    
+                    echo display_validation_error("Email could not be sent.");
+                    
+                } 
+                    
+                set_message("<p class='bg-success text-center'>Please check your email for a password reset link and code.</p>");
+                
+                redirect("index.php");
+                    
+                
+            } else {
+                
+                
+                echo display_validation_error("Cannot find that email address.");
+                
+            }
             
         
-        }
+        } else {
+            
+            redirect("index.php");
+            
+        } //token check
+        
+    } // post request check
+    
+}
+
+/* validation password reset code */
+
+function validate_code() {
+    
+    //check that temp_access_code cookie is set
+    if(isset($_COOKIE['temp_access_code'])) {
+            
+            if(!isset($_GET['email']) || !isset($_GET['code'])) {
+                
+                redirect("index.php");
+                
+            } else if(empty(($_GET['email']) || empty($_GET['code']))  ){ 
+                
+                redirect("index.php");
+                
+            } else {
+                
+                if(isset($_POST['code'])) {
+                    
+                    $email = clean($_GET['email']);
+                    
+                    $validation_code = clean($_POST['code']);
+                    
+                    $sql = "SELECT id FROM users WHERE validation_code = '" . escape($validation_code) . "' AND email = '" . escape($email) . "'";
+                    set_message("<p>$sql</p>");
+                    $result = query($sql);
+                    confirm($result);
+                    
+                    if(row_count($result) == 1) {
+                        
+                        redirect("reset.php");
+                        
+                    } else {
+                        
+                        echo display_validation_error("Sorry your validation code seems to have expired.");
+                        
+                        redirect("recover.php");
+                        
+                    }
+                    
+                }
+                
+            }
+        
+    } else {
+        
+        set_message("<p class='bg-danger text-center'>Sorry your password reset period has expired.</p>");
+        
+        redirect("recover.php");
         
     }
+    
+    
     
 }
 
