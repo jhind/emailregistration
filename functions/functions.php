@@ -492,7 +492,7 @@ function recover_password() {
                 
                 $validation_code = token_generator();
                 
-                setcookie('temp_access_code', $validation_code, time() + 300);
+                setcookie('temp_access_code', $validation_code, time() + 900);
                 
                 $sql = "UPDATE users SET validation_code = '$validation_code' WHERE email = '$email'";
                 $result = query($sql);
@@ -566,7 +566,9 @@ function validate_code() {
                     
                     if(row_count($result) == 1) {
                         
-                        redirect("reset.php");
+                        setcookie('temp_access_code', $validation_code, time() + 300);
+                        
+                        redirect("reset.php?email=$email&code=$validation_code");
                         
                     } else {
                         
@@ -591,6 +593,26 @@ function validate_code() {
     
     
 }
+
+/* password reset */
+
+function password_reset() {
+    
+    if(isset($_GET['email']) && isset($GET['code'])) {
+        
+        echo "It works";
+     
+    } else {
+        
+        echo "It's not working yet!";
+        
+    }
+    
+    
+    
+}
+    
+    
 
 
 ?>

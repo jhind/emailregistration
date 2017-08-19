@@ -5,6 +5,8 @@
 		
 <!--			<div class="alert alert-success alert-dismissible" role="alert">-->
 			
+                <?php display_message(); ?>   
+               
                 <?php validate_code(); ?>
 			
 				<!--<button type="button" class="close" data-dismiss="alert">
