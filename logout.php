@@ -4,9 +4,9 @@
 
         if(isset($_COOKIE['emailreg'])) {
             
-            unset($_COOKIE['emailreg']));
+            unset($_COOKIE['emailreg']);
             
-            setcookie('emailreg', '', time() - 86400)
+            setcookie('emailreg', '', time() - 86400);
             
         }
 

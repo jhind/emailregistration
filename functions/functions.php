@@ -1,6 +1,6 @@
 <?php
 
-
+require './vendor/autoload.php';
 
 /* helper functions */
 
@@ -104,9 +104,38 @@ function username_exists($username) {
 
 }
 
-function send_email($email, $subject, $msg, $headers) {
+function send_email($email=null, $subject=null, $msg=null, $headers=null) {
     
-    mail($email, $subject, $msg, $headers);
+    $mail = new PHPMailer;
+
+    //$mail->SMTPDebug = 3;                               // Enable verbose debug output
+
+    $mail->isSMTP();                                      // Set mailer to use SMTP
+    $mail->Host = 'smtp.mailtrap.io';                     // Specify main and backup SMTP servers
+    $mail->SMTPAuth = true;                               // Enable SMTP authentication
+    $mail->Username = '21f3a081df603a';                   // SMTP username
+    $mail->Password = '8336b8b1fdb87a';                   // SMTP password
+    $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+    $mail->Port = 2525;                                   // TCP port to connect to
+    $mail->setFrom('admin@jdeveloper.com', 'John Hind');
+    $mail->addAddress($email);
+
+    $mail->Subject = $subject;
+    $mail->Body    = 'This is the HTML message body <b>in bold!</b>';
+    $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+    if(!$mail->send()) {
+        
+        echo 'Message could not be sent.';
+        echo 'Mailer Error: ' . $mail->ErrorInfo;
+        
+    } else {
+        
+        echo 'Message has been sent';
+        
+    }
+
+    // mail($email, $subject, $msg, $headers);
     
 }
 
@@ -520,8 +549,7 @@ function recover_password() {
                 
             } else {
                 
-                
-                echo display_validation_error("Cannot find that email address.");
+                echo display_validation_error("Cannot find that email address. You do not appear to be registered. Please register or contact support if you believe this is an error.");
                 
             }
             
@@ -531,6 +559,13 @@ function recover_password() {
             redirect("index.php");
             
         } //token check
+        
+        if(isset($_POST['cancel_submit'])) {
+            
+            
+            redirect("login.php");
+            
+        }
         
     } // post request check
     
@@ -560,13 +595,13 @@ function validate_code() {
                     $validation_code = clean($_POST['code']);
                     
                     $sql = "SELECT id FROM users WHERE validation_code = '" . escape($validation_code) . "' AND email = '" . escape($email) . "'";
-                    set_message("<p>$sql</p>");
+                    // set_message("<p>$sql</p>");
                     $result = query($sql);
                     confirm($result);
                     
                     if(row_count($result) == 1) {
                         
-                        setcookie('temp_access_code', $validation_code, time() + 300);
+                        setcookie('temp_access_code', $validation_code, time() + 900);
                         
                         redirect("reset.php?email=$email&code=$validation_code");
                         
@@ -598,17 +633,56 @@ function validate_code() {
 
 function password_reset() {
     
-    if(isset($_GET['email']) && isset($GET['code'])) {
+    if(isset($_COOKIE['temp_access_code'])) {
+    
+        if(isset($_GET['email']) && isset($_GET['code'])) {
         
-        echo "It works";
-     
+            if(isset($_SESSION['token']) && isset($_POST['token']))  {
+
+               if($_POST['token'] === $_SESSION['token']) {
+                   
+                   if($_POST['password'] === $_POST['confirm_password']) {
+                       
+                       $password = escape($_POST['password']);
+                       $password = password_hash($password, PASSWORD_BCRYPT);
+            
+                       echo "Passwords match";
+                       
+                   } else {
+                       
+                       echo "Passwords do not match";
+                       
+                   }
+                   
+                   $sql = "UPDATE users SET password = '$password', validation_code = 0 WHERE email = '" . escape($_GET['email']) . "'";
+                   $result = query($sql);
+                   confirm($result);
+                   
+                   set_message("<p class='bg-success text-center'>Your password has been reset, please login.</p>");
+                   
+                   redirect("login.php");
+                   
+                   //echo "It works, token is set";
+                   
+               } else {
+                   
+                   echo "Something went wrong";
+                   
+               }
+
+            }
+            
+        }
+        
+        
+
     } else {
         
-        echo "It's not working yet!";
+        set_message("<p class='bg-danger text-center'>Sorry your reset period has expired, please try again.</p>");
+        
+        redirect("recover.php");
         
     }
-    
-    
     
 }
     
