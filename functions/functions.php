@@ -111,18 +111,18 @@ function send_email($email=null, $subject=null, $msg=null, $headers=null) {
     //$mail->SMTPDebug = 3;                               // Enable verbose debug output
 
     $mail->isSMTP();                                      // Set mailer to use SMTP
-    $mail->Host = 'smtp.mailtrap.io';                     // Specify main and backup SMTP servers
+    $mail->Host = Config::SMTP_HOST;                      // Specify main and backup SMTP servers
     $mail->SMTPAuth = true;                               // Enable SMTP authentication
-    $mail->Username = '21f3a081df603a';                   // SMTP username
-    $mail->Password = '8336b8b1fdb87a';                   // SMTP password
+    $mail->Username = Config::SMTP_USER;                  // SMTP username
+    $mail->Password = Config::SMTP_PASSWORD;              // SMTP password
     $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
-    $mail->Port = 2525;                                   // TCP port to connect to
-    $mail->setFrom('admin@jdeveloper.com', 'John Hind');
+    $mail->Port = Config::SMTP_PORT;                      // TCP port to connect to
+    $mail->setFrom('admin@jdeveloper.com', 'Admin');
     $mail->addAddress($email);
 
     $mail->Subject = $subject;
-    $mail->Body    = 'This is the HTML message body <b>in bold!</b>';
-    $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+    $mail->Body    = $msg;
+    $mail->AltBody = $msg;
 
     if(!$mail->send()) {
         
@@ -310,12 +310,12 @@ function register_user($first_name, $last_name, $username, $email, $password) {
         
         if($result) {
             
-            return true;
+            
             
             $subject = "Activate your account";
             $msg = " Please click the link below to activate your account
             
-                http://login.app/activate.php?email=$email&code=$validation
+            <a href='http://login.app/activate.php?email=$email&code=$validation'>Activate Account</a>
             
             
             ";
@@ -323,6 +323,8 @@ function register_user($first_name, $last_name, $username, $email, $password) {
             $header = "From: noreply@anywebsite.com";
             
             send_email($email, $subject, $msg, $headers);
+            
+            return true;
             
         } else {
             
@@ -529,9 +531,8 @@ function recover_password() {
                 
                 $subject = "Please reset your password";
                 $message = " Here is your password reset code {$validation_code}
-                
-                Click here to reset your password http://login.app/code.php?email=$email&code=$validation_code
-                
+                <br/>
+                Please copy and past the link into your browser or click to reset your password and copy the code into the box<br/> <a href='http://login.app/code.php?email=$email&code=$validation_code'>http://login.app/code.php?email=$email&code=$validation_code</a>                
                 ";
                 
                 $headers = "noreply@login.com";

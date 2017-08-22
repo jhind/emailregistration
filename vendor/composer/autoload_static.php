@@ -7,6 +7,7 @@ namespace Composer\Autoload;
 class ComposerStaticInit9241a6743e913d7e428d507f48ceaccf
 {
     public static $classMap = array (
+        'Config' => __DIR__ . '/../..' . '/classes/Config.php',
         'EasyPeasyICS' => __DIR__ . '/..' . '/phpmailer/phpmailer/extras/EasyPeasyICS.php',
         'PHPMailer' => __DIR__ . '/..' . '/phpmailer/phpmailer/class.phpmailer.php',
         'PHPMailerOAuth' => __DIR__ . '/..' . '/phpmailer/phpmailer/class.phpmaileroauth.php',
