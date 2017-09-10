@@ -7,7 +7,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Project name</a>
+          <a class="navbar-brand" href="#">Login and Registration</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
@@ -19,6 +19,11 @@
                 <li><a href="admin.php">Admin</a></li>
                 <li><a href="logout.php">Logout</a></li>
             <?php endif; ?>
+          </ul>
+          <ul class="nav navbar-right">
+              <?php if(logged_in()):?>
+                  <li><p class="navbar-text">You are logged in as <?php echo $_SESSION['username'];?></p></li>
+              <?php endif; ?>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
