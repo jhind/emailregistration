@@ -104,6 +104,17 @@ function username_exists($username) {
 
 }
 
+function password_complexity($password) {
+    
+    //does password contain any of  !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
+    $specialcharacters = "!#$%&\"'()*+,-./:;<=>?@[\]^_`{|}~";
+    $arrayspecial = str_split($specialcharacters);
+    
+    
+    
+    
+}
+
 function send_email($email=null, $subject=null, $msg=null, $headers=null) {
     
     $mail = new PHPMailer;
@@ -151,7 +162,8 @@ function validate_user_registration() {
     
     $errors = [];
     $min = 3;
-    $max = 20;
+    $max = 50;
+    $minpassword = 8;
 
     if($_SERVER['REQUEST_METHOD'] == "POST") {
 
@@ -228,6 +240,8 @@ function validate_user_registration() {
             $errors[] = "Your passwords do not match. Please check and re-enter.";
 
         }
+        
+        
 
 
 
@@ -434,6 +448,7 @@ function validate_login() {
         // log user in if no errors
         } else {
             
+            // call login_user here
             if(login_user($email, $password, $remember)) {
                 
                 redirect("admin.php");
