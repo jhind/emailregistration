@@ -469,7 +469,7 @@ function validate_login() {
 
 function login_user($email, $password, $remember) {
     
-    $sql = "SELECT password, id FROM users WHERE email = '" . escape($email) . "' AND active = 1";
+    $sql = "SELECT password, username, id FROM users WHERE email = '" . escape($email) . "' AND active = 1";
     
     $result = query($sql);
     
@@ -490,8 +490,10 @@ function login_user($email, $password, $remember) {
         
             //$email has already been escaped in the sql query. But probably should escape it again
             //even though it's just being assigned to a session variable
+            //though it is user unescaped user input
             
             $_SESSION['email'] = escape($email);
+            $_SESSION['username'] = $row['username'];
                 
             return true;
         
@@ -644,6 +646,19 @@ function validate_code() {
     
     
 }
+
+//alternate validation for reset code bypass the code page
+//take user straight to the password reset page without need to
+//copy code into the box
+
+function validate_code_2() {
+    
+        
+    
+    
+    
+}
+
 
 /* password reset */
 
